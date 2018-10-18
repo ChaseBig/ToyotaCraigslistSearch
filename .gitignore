@@ -1,2 +1,7 @@
 
-*.html
+*.pyc
+*.xml
+*.iml
+*.xml
+.idea/dictionaries/chase_small.xml
+*.textClipping
