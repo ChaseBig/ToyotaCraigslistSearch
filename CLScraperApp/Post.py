@@ -2,12 +2,11 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from urllib.error import URLError
 import re
-from datetime import datetime, timedelta
 
 
 class Post(object) :
     
-    def __init__(self, post_id, locale, location, category, post_title, url='', title='', content='', email='', date='', status = 0):
+    def __init__(self, post_id, locale, location, category, post_title, url='', title='', content='', status = 0):
         
         self.post_id = post_id
         self.url = ('https://{}.craigslist.org/{}/d/{}/{}.html').format(locale, category, post_title, post_id)
@@ -17,8 +16,6 @@ class Post(object) :
         self.title = title
         self.post_title = post_title
         self.content = content
-        self.email = email
-        self.date = date
         self.status = status
         
         self.get_post()
@@ -33,13 +30,6 @@ class Post(object) :
 
             self.content = post_content
 
-            for reply in soup.find_all('a', {'id':'replylink'}):
-                if reply is not None :
-                    reply_link = reply["href"]
-                    reply_url = self.url[:self.url.find('.org') + 4] + reply_link
-                    reply_page = BeautifulSoup(urlopen(reply_url).read())
-                    self.email = reply_page.find('p', class_='anonemail')
-
         except URLError as error:
             pass
 
@@ -51,9 +41,6 @@ class Post(object) :
 
     def get_category(self):
         return self.category
-
-    def get_category_full_name(self):
-        return self.category_full_name
 
     def get_title(self):
         try: 
@@ -74,15 +61,9 @@ class Post(object) :
     def get_body(self):
         return self.content
 
-    def get_email(self):
-        return self.email
-
-    def get_date(self):
-        return self.date
-
     def get_url(self):
         return self.url
 
     def __str__(self):
-        return 'Title:{title}. Date:{date}. Email:{email}. Location:{location}. Locale:{locale}. Category:{category}'\
-            .format(title= self.title, date= self.date, email= self.email, locale=self.locale, location= self.location, category= self.category)
+        return 'Title:{title}. Locale:{locale}. Location:{location}. Category:{category}'\
+            .format(title= self.title, locale=self.locale, location= self.location, category= self.category)

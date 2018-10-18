@@ -21,7 +21,7 @@ ul{
 	margin: 0;
 }
 
-.post_header, .post_body, .no_posts, .post_locale_content {
+.post_header, .post_body, .no_posts {
     border: 2px solid black;
     padding: 10px; 
     margin-left: 35px;

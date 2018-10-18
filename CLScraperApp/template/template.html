@@ -11,17 +11,17 @@
 		<h1 id='locale'>{{locale}} (and nearby areas)</h1>
 		{%for category in categories%}
 			<h2 id='category'>{{category}}</h2>
-			{% for post in posts if post.get_category() == category and post.get_locale() == locale%}
+			{% for post in posts if post.get_category() == category and post.get_location() == locale%}
 				<ul>
 					<li>
 						<div class='post'>
 							<!-- {{post}} -->
 							<div class="post_header">
 								<h3 class='post_post_title'><a target="_blank" href="{{post.get_url()}}">{{post.get_post_title()}}</a></h3>
+								<h3 class='post_locale_content'>{{post.get_locale()}}</h3>
 							</div>
 							<div class="post_body">
 								<p class='post_content'>{{post.get_body()}}</p>
-								<p class='post_locale_content'>{{post.get_locale()}}</p>
 							</div>
 						</div>
 					</li>
