@@ -6,7 +6,7 @@ import re
 
 class Post(object) :
     
-    def __init__(self, post_id, locale, location, category, post_title, url='', title='', content='', status = 0):
+    def __init__(self, post_id, locale, location, category, post_title, photos='', url='', title='', content='', status = 0, details=''):
         
         self.post_id = post_id
         self.url = ('https://{}.craigslist.org/{}/d/{}/{}.html').format(locale, category, post_title, post_id)
@@ -17,6 +17,8 @@ class Post(object) :
         self.post_title = post_title
         self.content = content
         self.status = status
+        self.photos = photos
+        self.details = details
         
         self.get_post()
 
@@ -27,8 +29,15 @@ class Post(object) :
 
             post_content = str(soup.find(id='postingbody'))
             post_content = re.sub(r'(QR Code Link to This Post)','', post_content, flags=re.IGNORECASE)
-
             self.content = post_content
+
+            post_photos = soup.find_all('figure')
+            for post_photo in post_photos:
+                post_photo.get('class')
+            self.photos = post_photos
+
+            post_details = soup.find_all('p', class_='attrgroup')
+            self.details = post_details
 
         except URLError as error:
             pass
@@ -60,6 +69,12 @@ class Post(object) :
 
     def get_body(self):
         return self.content
+
+    def get_photos(self):
+        return self.photos
+
+    def get_details(self):
+        return self.details
 
     def get_url(self):
         return self.url
