@@ -11,20 +11,19 @@ from Post import Post
 def get_globals():
     try:
         config = {}
-        exec(open('config.conf').read(), config)
+        exec (open('config.conf').read(), config)
         locales = config['locales']
         categories = config['categories']
-        queryStrings = config['queryStrings']
-        return (locales, categories, queryStrings)
+        query_strings = config['query_strings']
+        return locales, categories, query_strings
     except Exception as e:
         raise
 
 
-def get_posts(locale, category, queryString):
-
+def get_posts(locale, category, query_string):
     posts = []
 
-    url = ('https://' + locale + '.craigslist.org/search/' + category + '?' + queryString)
+    url = ('https://' + locale + '.craigslist.org/search/' + category + '?' + query_string)
     try:
         soup = BeautifulSoup(urlopen(url).read(), "lxml")
     except URLError:
@@ -34,9 +33,9 @@ def get_posts(locale, category, queryString):
 
     for link in soup.find_all(class_='result-title hdrlnk'):
         print(link.get('href'))
-        # example -- https://lincoln.craigslist.org/cto/d/2014-toyota-tacoma-4x4-double/6712707059.html 
         links.append(link.get('href'))
 
+        # example -- https://lincoln.craigslist.org/cto/d/2014-toyota-tacoma-4x4-double/6712707059.html
     for link in links:
         temp = link.split("/")
         location = temp[2].replace(".craigslist.org", "")
@@ -48,6 +47,7 @@ def get_posts(locale, category, queryString):
 
 
 def make_html(locales, categories, posts):
+    # http://jinja.pocoo.org/docs/2.10/
     from jinja2 import Environment, PackageLoader
     env = Environment(loader=PackageLoader('scraper', 'template'))
     template = env.get_template('template.html')
@@ -57,16 +57,15 @@ def make_html(locales, categories, posts):
     with open(output_destination, 'wb') as output:
         output.write(bytes(html_output, 'UTF-8'))
 
-    # http://jinja.pocoo.org/docs/2.10/
 
 def main():
-    locales, categories, queryStrings = get_globals()
+    locales, categories, query_strings = get_globals()
     posts = []
 
     for locale in locales:
         for category in categories:
-            for queryString in queryStrings:
-                posts.extend(get_posts(locale, category, queryString))
+            for query_string in query_strings:
+                posts.extend(get_posts(locale, category, query_string))
 
     make_html(locales, categories, posts)
     print('Posts found:{n_posts}. Done!'.format(n_posts=len(posts)))
