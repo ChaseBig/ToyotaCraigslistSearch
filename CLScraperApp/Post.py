@@ -6,7 +6,7 @@ import re
 
 class Post(object) :
     
-    def __init__(self, post_id, locale, location, category, post_title, photos='', url='', title='', content='', status = 0, details=''):
+    def __init__(self, post_id, locale, location, category, post_title, photos='', url='', title='', content='', status = 0, details='', price=''):
         
         self.post_id = post_id
         self.url = ('https://{}.craigslist.org/{}/d/{}/{}.html').format(locale, category, post_title, post_id)
@@ -19,6 +19,7 @@ class Post(object) :
         self.status = status
         self.photos = photos
         self.details = details
+        self.price = price
         
         self.get_post()
 
@@ -38,6 +39,9 @@ class Post(object) :
 
             post_details = soup.find_all('p', class_='attrgroup')
             self.details = post_details
+
+            post_price = soup.find_all('span', class_='price')
+            self.price = post_price
 
         except URLError as error:
             pass
@@ -72,6 +76,9 @@ class Post(object) :
 
     def get_photos(self):
         return self.photos
+
+    def get_price(self):
+        return self.price
 
     def get_details(self):
         return self.details

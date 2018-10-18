@@ -1,5 +1,6 @@
 from __future__ import print_function
 from datetime import datetime
+
 from urllib.error import URLError
 from urllib.request import urlopen
 import re
@@ -12,7 +13,7 @@ def get_globals():
     try:
         config = {}
         exec (open('config.conf').read(), config)
-        locales = config['locales']
+        locales = config['locales'] # https://www.craigslist.org/about/sites
         categories = config['categories']
         query_strings = config['query_strings']
         return locales, categories, query_strings
@@ -61,11 +62,13 @@ def make_html(locales, categories, posts):
 def main():
     locales, categories, query_strings = get_globals()
     posts = []
+    locations = []
 
     for locale in locales:
         for category in categories:
             for query_string in query_strings:
                 posts.extend(get_posts(locale, category, query_string))
+
 
     make_html(locales, categories, posts)
     print('Posts found:{n_posts}. Done!'.format(n_posts=len(posts)))

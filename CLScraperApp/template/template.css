@@ -55,6 +55,11 @@ ul{
     float: right;
 }
 
+.post_price{
+    text-align: center;
+    float: center;
+}
+
 .post_post_title{
 	float: left;
 } 
