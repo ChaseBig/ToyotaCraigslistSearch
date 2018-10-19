@@ -1,9 +1,7 @@
 from __future__ import print_function
 from datetime import datetime
-
 from urllib.error import URLError
 from urllib.request import urlopen
-import re
 from bs4 import BeautifulSoup
 
 from Post import Post
@@ -13,7 +11,9 @@ def get_globals():
     try:
         config = {}
         exec (open('config.conf').read(), config)
-        locales = config['locales'] # https://www.craigslist.org/about/sites
+        locales = config['locales']
+        # https://www.craigslist.org/about/sites
+        # https://gist.githubusercontent.com/jeffThompson/62fcd3540affdf194b9a/raw/171cb3e6ed4c78c2c915263cbdeffd7bd9723f6a/AllCraigslistLocations
         categories = config['categories']
         query_strings = config['query_strings']
         return locales, categories, query_strings
@@ -36,6 +36,7 @@ def get_posts(locale, category, query_string):
         print(link.get('href'))
         links.append(link.get('href'))
 
+
         # example -- https://lincoln.craigslist.org/cto/d/2014-toyota-tacoma-4x4-double/6712707059.html
     for link in links:
         temp = link.split("/")
@@ -43,6 +44,7 @@ def get_posts(locale, category, query_string):
         post_title = temp[5]
         post_id = temp[6].replace(".html", "")
         posts.append(Post(post_id, location, locale, category, post_title))
+        links = (post for post in links if post.a['href'][0] == '/')
 
     return posts
 

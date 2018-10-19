@@ -2,3 +2,5 @@ simpleconfigparser
 config
 jinja2
 beautifulsoup4==4.6.3
+bs4
+BeautifulSoup
