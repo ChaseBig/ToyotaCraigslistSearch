@@ -18,7 +18,7 @@ Now start the main python script simple using:
 
 The output is a simple html file with the posts found. The html ouput file is named with the datetime of when the script was run.
 
-You'll need to use BeautifulSoup and python3, see requirements.txt for details.
+You'll need to use `BeautifulSoup` and `python3`, see requirements.txt for details.
 
 
 ```python
