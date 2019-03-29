@@ -85,7 +85,7 @@ class Post(object) :
 
     def get_url(self):
         return self.url
-# silent
+# whitespace
     def __str__(self):
         return 'Title:{title}. Locale:{locale}. Location:{location}. Category:{category}'\
             .format(title= self.title, locale=self.locale, location= self.location, category= self.category)
